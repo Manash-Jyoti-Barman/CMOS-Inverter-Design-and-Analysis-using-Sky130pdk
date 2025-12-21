@@ -58,24 +58,59 @@
  > [skywater pdk manual](https://skywater-pdk.readthedocs.io/en/main/)
 
 ## 2. Analysis of MOSFET models
+### 2.1 General MOS analysis
 MOSFET models describe the electrical behavior of transistors under various biasing conditions and are essential for accurate CMOS circuit analysis. In this section, standard 1.8V nMOS and pMOS models from the SKY130 PDK are analyzed using Xschem and Ngspice to study their current–voltage characteristics and key model parameters. This analysis provides the basis for device characterization and subsequent CMOS inverter design.
 The components used are as follows:
 
-1. ```nfet_01v8.sym``` (xschem_sky130 library)<br>
-2. ```vsource.sym``` (xschem device library)<br>
-3. ```code_shown.sym``` (xschem device library)<br>
-4. ```gnd.sym``` (xschem device library)<br>
+1. ```nfet_01v8.sym``` (xschem_sky130 library)
+2. ```vsource.sym``` (xschem device library)
+3. ```code_shown.sym``` (xschem device library)
+4. ```gnd.sym``` (xschem device library)
 
-I generated the netlist using Xschem and then do DC analysis usng Ngspice to plot basic characteristic plots for nMOS and pMOS transistors, i.e. __Ids vs Vds__ and __Ids vs Vgs__.
-
+I generated the netlist using Xschem and then do DC analysis usng Ngspice to plot basic characteristic plots for nMOS and pMOS transistors, i.e. **Ids vs Vds** and **Ids vs Vgs**.
+![nMOS schematic](./Images/nfet_1v8_sch.png)<br>
 When I sweep Vgs (gate-to-source voltage) for different values of Vds (drain-to-source voltage) in DC analysis, the plot below are obtained:
-The above plot is for __Id vs Vgs__ and we can see that the threshold voltage for the nMOS lies between 0.6V and 0.7V
+![Id vs Vgs](./Images/Id_vs_Vgs_for_nfet_1v8.png)<br>
+The above plot is for **Id vs Vgs** and we can see that the threshold voltage for the nMOS lies between 0.6V and 0.7V
 
 When I sweep Vds (drain-to-source voltage) for different values of Vgs (gate-to-source voltage) in DC analysis, the plot below are obtained:
-The above plot is for __Id vs Vds__ and we can see the linear and saturation region of the curve of nMOS.
+![Id vs Vds](./Images/Id_vs_Vds_for_nfet_1v8.png)<br>
+The above plot is for **Id vs Vds** and we can see the linear and saturation region of the curve of nMOS.
 
-For the plot of transconductance gm for nMOS, I obtained it from __Id vs Vgs__ plot using ```deriv``` command since gm = ∂Id/∂Vgs and for the plot of output conductance go for nMOS, it is obtained similarly from __Id vs Vds__ plot using ```deriv``` command since go = ∂Id/∂Vds or ro = 1/(∂Id/∂Vds):
-
+For the plot of transconductance gm for nMOS, I obtained it from **Id vs Vgs** plot using ```deriv``` command since gm = ∂Id/∂Vgs and for the plot of output conductance go for nMOS, it is obtained similarly from **Id vs Vds** plot using ```deriv``` command since go = ∂Id/∂Vds or ro = 1/(∂Id/∂Vds):
+![gm vs Vgs](./Images/gm_nfet_1v8.png)<br><br>
+![gm vs Vgs](./Images/go_nfet_1v8.png)<br>
 For designing an inverter, I have choose the highest value available for Vds which will be 1.8V and find values of drain current (Id), transconductance (gm), and output resistance (rds) at Vgs = 1.8V and Vds = 1.8V:
+![Vgs sweep plots](./Images/vgs_sweep_nfet_1v8.png)<br><br>
+![Vds sweep plots](./Images/vds_sweep_nfet_1v8.png)<br>
+From the above plots and simulations, we get:
+1. Id = 0.5009414 mA at Vgs = 1.8V
+2. gm = 0.5320934 mS at Vgs = 1.8V
+3. Id = 0.5009414 mA at Vds = 1.8V
+4. rds = 19.30674KΩ at Vds = 1.8V
+We have found all the important values we needed for nMOS and we can do the same for pMOS. The main objective is to decide the aspect ratio to achieve a symmetric CMOS inverter with equal driving strengths. After doing some experiments, I have obtained that at Wp = 3.5 Wn, keeping the L same at 0.15μm. So, After performing same simulations for pMOS at W = 3.5:
+![pMOS schematic](./Images/pfet_1v8_sch.png)<br><br>
+![Vgs sweep plots](./Images/vgs_sweep_pfet_1v8.png)<br><br>
+![Vds sweep plots](./Images/vds_sweep_pfet_1v8.png)<br>
+From the above plots and simulations, we get:
+1. Id = 0.711175 mA at Vgs = 1.8V
+2. gm = 0.8593639 mS at Vgs = 1.8V
+3. Id = 0.711175 mA at Vds = 1.8V
+4. rds = 6.510506KΩ at Vds = 1.8V
+### 2.2 Strong 0 and Weak 1
+![nMOS inverter](./Images/nmos_inv.png)<br><br>
+![nMOS inverter Transient](./Images/nmos_inv_tran.png)<br>
+In the above, when a square wave is applied to the NMOS inverter, a LOW input turns the NMOS OFF and the output is pulled up to 1.8 V. When the input is HIGH, the NMOS turns ON and operates in the linear region as a result it will act as a voltage controlled resistor. The output then forms a voltage divider and does not reach the full logic level. Hence, NMOS passes a strong 0 but only a weak 1.
+### 2.3 Weak 0 and Strong 1
+![pMOS inverter](./Images/pmos_inv.png)<br><br>
+![pMOS inverter Transient](./Images/pmos_inv_tran.png)<br>
+The pMOS here passes a strong 1 but only a weak 0 because of the same reason which is explained for the nMOS. When input is LOW, the pMOS turns ON and operates in linear region acting as a voltage controlled resistor. 
 
-
+## 3. CMOS Inverter Design and Analysis
+### 3.1 Why CMOS Circuits
+From the above section, it is observed that pMOS passes strong 1 and nMOS passes weak 0. Neither nMOS nor pMOS alone can be used to design an inverter to produce HIGH and LOW values. But we can use both together to achieve this since they complement each other. The pMOS is used as a pull-up network since it passes strong 1 and the nMOS is used as a pull-down network since it passes strong 0.<br>
+So, the circuit of CMOS consists of pMOS transistor between Vdd and Vout and nMOS circuit between Vout and GND (series with pMOS). When we give input logic 0, pMOS is ON and nMOS is OFF which makes current flow from VDD to Vout resulting in output logic 1. Similarly, when we give input logic 1, nMOS is turned ON and pMOS is turned OFF which makes the current flow from Vout node to GND resulting in output logic 0. In this way, CMOS can provide **rail-to-rail** output.
+### 3.2 Design of CMOS inverter circuit
+Using the above theory, I have used the standard 1.8V models of pMOS and nMOS from Skywater 130nm PDK to design a CMOS inverter. The schematic and symbol of the inverter designed using Xschem is given below:
+![CMOS inverter schematic](./Images/cmos_inv_sch.png)<br><br>
+![CMOS inverter symbol](./Images/cmos_inv_sym.png)<br>

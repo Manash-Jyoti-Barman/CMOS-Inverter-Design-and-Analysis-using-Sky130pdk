@@ -147,3 +147,16 @@ NOISE MARGIN HIGH: **NMH = VOH - VIH**<br>
 
 The Noise margin values obtained for our inverter are NML = 0.705V and NMH = 0.72V.
 Since we have obtained the Vm very close to 0.9, so the noise margins obatined are very close to each other.
+
+### 3.3.2 Delay Analysis
+For the delay analysis, transient analysis is used since it is a time-domain phenomenon. I have used the same testbench that I used before for my inverter for Noise Margin analysis. The obtained transient analysis plot for Vin and Vout is shown below:
+![CMOS inverter tran](./Images/cmos_inv_tran.png)<br>
+From the above plot I have calculated the propagation delay first. Propagation delay is defined as the time it takes for a change at the input of a gate to cause a corresponding change at the output. It is measured between the 50% points of the input and output voltage waveforms. In a CMOS inverter:<br>
+tpHL: Time delay when output falls from HIGH to LOW.<br>
+tpLH: Time delay when output rises from LOW to HIGH.<br>
+The average propagation delay is given by:<br>
+tp = (tpHL+tpLH)/2
+![propagation delay](./Images/prop_delay.jpg)<br>
+	​
+
+	​

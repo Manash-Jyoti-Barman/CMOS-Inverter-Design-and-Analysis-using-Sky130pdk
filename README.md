@@ -68,12 +68,14 @@ The components used are as follows:
 
 I generated the netlist using Xschem and then do DC analysis usng Ngspice to plot basic characteristic plots for nMOS and pMOS transistors, i.e. __Ids vs Vds__ and __Ids vs Vgs__.
 
-When I sweep Vgs for different values of Vds in DC analysis, the plot below are obtained:
+When I sweep Vgs (gate-to-source voltage) for different values of Vds (drain-to-source voltage) in DC analysis, the plot below are obtained:
 The above plot is for __Id vs Vgs__ and we can see that the threshold voltage for the nMOS lies between 0.6V and 0.7V
 
-When I sweep Vds for different values of Vgs in DC analysis, the plot below are obtained:
+When I sweep Vds (drain-to-source voltage) for different values of Vgs (gate-to-source voltage) in DC analysis, the plot below are obtained:
 The above plot is for __Id vs Vds__ and we can see the linear and saturation region of the curve of nMOS.
 
 For the plot of transconductance gm for nMOS, I obtained it from __Id vs Vgs__ plot using ```deriv``` command since gm = ∂Id/∂Vgs and for the plot of output conductance go for nMOS, it is obtained similarly from __Id vs Vds__ plot using ```deriv``` command since go = ∂Id/∂Vds or ro = 1/(∂Id/∂Vds):
+
+For designing an inverter, I have choose the highest value available for Vds which will be 1.8V and find values of drain current (Id), transconductance (gm), and output resistance (rds) at Vgs = 1.8V and Vds = 1.8V:
 
 

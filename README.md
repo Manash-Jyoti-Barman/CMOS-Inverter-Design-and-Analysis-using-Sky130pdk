@@ -114,3 +114,36 @@ So, the circuit of CMOS consists of pMOS transistor between Vdd and Vout and nMO
 Using the above theory, I have used the standard 1.8V models of pMOS and nMOS from Skywater 130nm PDK to design a CMOS inverter. The schematic and symbol of the inverter designed using Xschem is given below:
 ![CMOS inverter schematic](./Images/cmos_inv_sch.png)<br><br>
 ![CMOS inverter symbol](./Images/cmos_inv_sym.png)<br>
+Although a CMOS inverter is conceptually simple, its design involves several important trade-offs between speed, power, noise margin, and area. In a CMOS inverter, optimizing one performance metric usually degrades another, so it requires careful balancing based on the target application and technology constraints. In this project I have tried to achieve ideal Vm = Vdd/2. This is important for having symmetric Noise Margins and Delays.<br>
+Theoretically to achieve this, I should take Wp = 2*Wn but models used from Skywater 130nm PDK, it is achieved when I take Wp = 3.5*Wn.
+### 3.3.1 Noise Margin Analysis
+Noise margin is a measure of the inverter’s ability to tolerate noise without causing a logic error. It is derived directly from the Voltage Transfer Characteristics (VTC). The Voltage Transfer Characteristic (VTC) of a CMOS inverter represents the relationship between the output voltage (Vout) and the input voltage(Vin). It is obtained by performing a DC sweep of the input voltage while keeping the supply voltage constant. The VTC curve shows three operating regions: low-input/high-output, transition region, and high-input/low-output. The slope of the curve in the transition region indicates the inverter gain, and the switching threshold voltage Vm is defined as the point where Vin = Vout.<br>
+![VTC](./Images/vtc_char_cmos.jpg)
+![noise margin](./Images/noise_margin.png)<br>
+I have created a testbench for my designed inverter feeding it Vdd = 1.8V and a input pulse which oscillates between 0 to 1.8V and has a period of 6.6ns:
+![CMOS inverter testbench](./Images/cmos_inv_tb.png)<br>
+After running simulation for DC analysis we get the results below:
+![CMOS inverter VTC](./Images/cmos_inv_vtc.png)<br>
+From the above Voltage Transfer Characteristic curve of CMOS inverter, it can be seen that the Vm is very close to 0.9V i.e. half of 1.8V. Also, from the VTC, the following critical points can be found:<br><br>
+    **VOH** - Maximum output voltage when it is logic '1'.<br>
+    **VOL** - Minimun output voltage when it is logic '0'.<br>
+    **VIH** - Maximum input voltage that can be interpreted as logic '0'.<br>
+    **VIL** - Minimum input voltage that can be interpreted as logic '1'.<br>
+    **Vm** - Switching Threshold voltage<br><br>
+The Points VIL, VIH, VOL and VOH lies on the curve where the magnitude of the slope is 1 and Vth lies where Vin = Vout. So, I have used the ```meas``` command tofrom  find these points the plot:
+![CMOS inverter dc](./Images/cmos_inv_dc.png)<br>
+The values of the points obtained from the above plot:
+| Voltage | Value |
+|---------|-------|
+| Vm | 0.899V |
+|   VOH   | 1.746V  |
+|   VOL   |  0.0701V   |
+|   VIH   | 1.026V |
+|   VIL   | 0.775V |
+
+There are two such values of Noise margins for a binary system. The calculation of Noise margin are done using the two expressions:<br>
+NOISE MARGIN LOW: **NML = VIL - VOL**<br>
+NOISE MARGIN HIGH: **NMH = VOH - VIH**<br>
+
+The Noise margin values obtained for our inverter are NML = 0.705V and NMH = 0.72V.
+Since we have obtained the Vm very close to 0.9, so the noise margins obatined are very close to each other.

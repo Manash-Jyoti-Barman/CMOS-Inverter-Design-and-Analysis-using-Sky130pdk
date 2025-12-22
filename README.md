@@ -173,5 +173,10 @@ Here, I get unexpected results as trise decreased and tfall increased. This can 
 In the above unloaded analysis where I have taken Wp = 3.5 and Wn = 1, we get **trise = 341.163ps** and t**fall = 371.712ps**<br><br>
 ![rise and fall time](./Images/rise_and_fall_time_cap-point1p(2)_4-2.png)<br>
 In another unloaded analysis where I have taken Wp = 4 and Wn = 2, we get **trise = 301.795ps** and **tfall = 226.137ps**<br><br>
-It is observed that clearly both decreases here. trise decreased by a lesser amount compared to tfall because Wp if increased by 0.5 only and Wn is increased to twice. In loaded analysis, the presence of a large external load capacitance makes drive strength the dominant factor, resulting in predictable reductions in rise and fall times with increased transistor widths.
+It is observed that clearly both decreases here. trise decreased by a lesser amount compared to tfall because Wp if increased by 0.5 only and Wn is increased to twice. In loaded analysis, the presence of a large external load capacitance makes drive strength the dominant factor, resulting in predictable reductions in rise and fall times with increased transistor widths.<br><br>
+
+### 3.3.3 Power Dissipation Analysis
+For Power dissipation I have done transient analysis of my loaded inverter testbench with Wp = 3.5 and Wn = 1. I have used the ```integ``` to perform integration of the current from Vdd source in the formula Pavg ​= (1/T) ∫[0→T] V_DD · I_DD(t) dt. For the time period in integration I have taken the second period from 6.6ns to 13.2ns since first period may conatain some anomaly.
+![power](./Images/cmos_inv_power.png)<br>
+Since the current is very small I have scale it up by 1000, so that it can be seen properly on the plot. The result obtained after power analysis is **Power_avg = 50.654 μW**. This includes dynamic power and short-circuit power.
 	​

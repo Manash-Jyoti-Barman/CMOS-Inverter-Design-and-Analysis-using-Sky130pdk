@@ -1,0 +1,15 @@
+
+Subcircuit summary:
+Circuit 1: cmos_inv.spice                  |Circuit 2: inv_layout.spice                
+-------------------------------------------|-------------------------------------------
+sky130_fd_pr__nfet_01v8 (1)                |sky130_fd_pr__nfet_01v8 (1)                
+sky130_fd_pr__pfet_01v8 (1)                |sky130_fd_pr__pfet_01v8 (1)                
+Number of devices: 2                       |Number of devices: 2                       
+Number of nets: 4                          |Number of nets: 4                          
+---------------------------------------------------------------------------------------
+Netlists match uniquely.
+Cells have no pins;  pin matching not needed.
+Device classes cmos_inv.spice and inv_layout.spice are equivalent.
+
+Final result: Circuits match uniquely.
+.

@@ -1,0 +1,13 @@
+** sch_path: /media/manashjb/2fbff9ec-d175-4c63-ba10-ee5a73296875/Projects/inverter/cmos_inv.sch
+
+**.subckt cmos_inv VDD Vin Vout VSS
+*.iopin VDD
+*.iopin VSS
+*.ipin Vin
+*.opin Vout
+XM1 Vout Vin VSS VSS sky130_fd_pr__nfet_01v8 L=0.15 W=1 nf=1 ad=0.29 as=0.29 pd=2.58 ps=2.58 nrd=0.29 nrs=0.29 sa=0 sb=0 sd=0
++ mult=1 m=1
+XM2 Vout Vin VDD VDD sky130_fd_pr__pfet_01v8 L=0.15 W=3.5 nf=1 ad=1.015 as=1.015 pd=7.58 ps=7.58 nrd=0.0828571428571429
++ nrs=0.0828571428571429 sa=0 sb=0 sd=0 mult=1 m=1
+**.ends
+.end

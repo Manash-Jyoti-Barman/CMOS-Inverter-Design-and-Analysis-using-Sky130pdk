@@ -26,7 +26,7 @@
     - [3.3.2 Delay Analysis](#332-Delay-Analysis)
     - [3.3.3 Power Dissipation Analysis](#332-Power-Dissipation-Analysis)
   - [3.4. Layout Design of CMOS inverter](#34-Layout-Design-of-CMOS-inverter)
-  - [3.5 Layout vs Schematic(LVS)](#35-Layout-vs-Schematic(LVS))
+  - [3.5 Layout vs Schematic](#35-Layout-vs-Schematic)
 
 ## 1. Tools and PDK
 ### 1.1 Xschem
@@ -187,8 +187,9 @@ At this stage I have tried to design a DRC-clean CMOS inverter layout correspond
 ![metal stack diagram](./Images/metal_stack.png)<br>​
 Below is the layout of the CMOS inverter I have designed and it is completed with 0 DRC errors.:<br>
 <img src = "./Images/inv_layout.png" width = "70%" height = "70%"></img><br>
+I have extracted the parasitics from the circuit and those parasitics are written in the spice netlist of the above layout deisgn.
 
-### 3.5 Layout vs Schematic(LVS)
-Layout Versus Schematic (LVS) is a verification step used in VLSI design to ensure that the physical layout represents the same circuit as the schematic. I have used **Netgen** for LVS and it needs spice netlists of both layout and schematic. I have extracted the inv_layout.ext file from Magic and converted it inv_layout.spice. Below is the Result of LVS in Netgen:
+### 3.5 Layout vs Schematic
+Layout Versus Schematic (LVS) is a verification step used in VLSI design to ensure that the physical layout represents the same circuit as the schematic. I have used **Netgen** for LVS and it needs spice netlists of both layout and schematic. I have extracted the inv_layout.ext file from Magic and converted it inv_layout.spice. Below is the Result of LVS in Netgen:<br>
 ![lvs](./Images/lvs_result.png)<br>
 The LVS result indicates that both the schematic and layout contain one NMOS and one PMOS transistor and four nets, corresponding to VDD, VSS, Vin, and Vout. Netgen reported that the two circuits match uniquely, confirming correct device count and connectivity between the schematic and the layout. Although some device geometry parameters (such as diffusion area, perimeter, and multiplicity) were not reported in the LVS output, the successful match confirms the logical equivalence of the design.

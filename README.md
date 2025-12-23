@@ -21,10 +21,12 @@
 - [3. CMOS Inverter Design and Analysis](#3-CMOS-Inverter-Design-and-Analysis)
   - [3.1 Why CMOS Circuits](#31-Why-CMOS-Circuits) 
   - [3.2 Design of CMOS inverter circuit](#32-Design-of-CMOS-inverter-circuit)
-  - [3.3 Analysis of CMOS inverter](#32-Analysis-of-CMOS-inverter)
+  - [3.3 Analysis of CMOS inverter](#33-Analysis-of-CMOS-inverter)
     - [3.3.1 Noise Margin Analysis](#331-Noise-Margin-Analysis)
     - [3.3.2 Delay Analysis](#332-Delay-Analysis)
     - [3.3.3 Power Dissipation Analysis](#332-Power-Dissipation-Analysis)
+  - [3.4. Layout Design of CMOS inverter](#34-Layout-Design-of-CMOS-inverter)
+  - [3.5 Layout vs Schematic(LVS)](#35-Layout-vs-Schematic(LVS))
 
 ## 1. Tools and PDK
 ### 1.1 Xschem
@@ -179,4 +181,14 @@ It is observed that clearly both decreases here. trise decreased by a lesser amo
 For Power dissipation I have done transient analysis of my loaded inverter testbench with Wp = 3.5 and Wn = 1. I have used the ```integ``` to perform integration of the current from Vdd source in the formula Pavg ​= (1/T) ∫[0→T] V_DD · I_DD(t) dt. For the time period in integration I have taken the second period from 6.6ns to 13.2ns since first period may conatain some anomaly.
 ![power](./Images/cmos_inv_power.png)<br>
 Since the current is very small I have scale it up by 1000, so that it can be seen properly on the plot. The result obtained after power analysis is **Power_avg = 50.654 μW**. This includes dynamic power and short-circuit power.
-	​
+
+### 3.4 Layout Design of CMOS inverter
+At this stage I have tried to design a DRC-clean CMOS inverter layout corresponding to the schematic design, ensuring correct transistor sizing and proper connectivity. **Design Rule Check (DRC)** is a verification step used in VLSI layout design to ensure that the physical layout follows all fabrication rules defined by the technology, here it is SkyWater 130nm. I have used **MAGIC VLSI** and TCL language for designing the a standard full-custom layout of CMOS inverter. I have kept the transistor sizes in layout same as I have taken in schematic. For designing the layout, I have referred the metal stack diagram and Design Rules from the [SkyWater SKY130 PDK](https://skywater-pdk.readthedocs.io/en/main/rules/assumptions.html) documentation itself. Below is the metal stack diagram:
+![metal stack diagram](./Images/metal_stack.png)<br>​
+Below is the layout of the CMOS inverter I have designed and it is completed with 0 DRC errors.:<br>
+<img src = "./Images/inv_layout.png" width = "70%" height = "70%"></img><br>
+
+### 3.5 Layout vs Schematic(LVS)
+Layout Versus Schematic (LVS) is a verification step used in VLSI design to ensure that the physical layout represents the same circuit as the schematic. I have used **Netgen** for LVS and it needs spice netlists of both layout and schematic. I have extracted the inv_layout.ext file from Magic and converted it inv_layout.spice. Below is the Result of LVS in Netgen:
+![lvs](./Images/lvs_result.png)<br>
+The LVS result indicates that both the schematic and layout contain one NMOS and one PMOS transistor and four nets, corresponding to VDD, VSS, Vin, and Vout. Netgen reported that the two circuits match uniquely, confirming correct device count and connectivity between the schematic and the layout. Although some device geometry parameters (such as diffusion area, perimeter, and multiplicity) were not reported in the LVS output, the successful match confirms the logical equivalence of the design.

@@ -27,6 +27,10 @@
     - [3.3.3 Power Dissipation Analysis](#332-Power-Dissipation-Analysis)
   - [3.4. Layout Design of CMOS inverter](#34-Layout-Design-of-CMOS-inverter)
   - [3.5 Layout vs Schematic](#35-Layout-vs-Schematic)
+  - [3.6 Post-Layout Analysis](#35-Post-Layout-Analysis)
+    - [3.6.1 Noise Margin Analysis](#361-Noise-Margin-Analysis)
+    - [3.6.2 Delay Analysis](#362-Delay-Analysis)
+    - [3.6.3 Power Dissipation Analysis](#363-Power-Dissipation-Analysis)
 
 ## 1. Tools and PDK
 ### 1.1 Xschem
@@ -193,3 +197,14 @@ I have extracted the parasitics from the circuit and those parasitics are writte
 Layout Versus Schematic (LVS) is a verification step used in VLSI design to ensure that the physical layout represents the same circuit as the schematic. I have used **Netgen** for LVS and it needs spice netlists of both layout and schematic. I have extracted the inv_layout.ext file from Magic and converted it inv_layout.spice. Below is the Result of LVS in Netgen:<br>
 ![lvs](./Images/lvs_result.png)<br>
 The LVS result indicates that both the schematic and layout contain one NMOS and one PMOS transistor and four nets, corresponding to VDD, VSS, Vin, and Vout. Netgen reported that the two circuits match uniquely, confirming correct device count and connectivity between the schematic and the layout. Although some device geometry parameters (such as diffusion area, perimeter, and multiplicity) were not reported in the LVS output, the successful match confirms the logical equivalence of the design.
+
+### 3.6 Post-Layout Analysis
+Post-layout analysis was carried out using Xschem and NGSPICE. The parasitic-extracted (PEX) netlist obtained from the CMOS inverter layout was included in the testbench (same used in pre-layout analysis), replacing the pre-layout schematic to evaluate the circuit performance with layout-induced parasitic effects. The Simulations results are as follows:
+
+### 3.6.1 Noise Margin Analysis
+![post-layout noise margin](./Images/postlayout_noisemargin.png)<br>
+### 3.6.2 Delay Analysis
+![post-layout delay](./Images/postlayout_propdelay.png)<br>
+![post-layout rise and fall time](./Images/postlayout_risefalltime.png)<br>
+### 3.6.3 Power Dissipation Analysis
+![post-layout power](./Images/postlayout_power.png)<br>

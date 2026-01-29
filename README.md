@@ -27,7 +27,7 @@
     - [3.3.3 Power Dissipation Analysis](#332-Power-Dissipation-Analysis)
   - [3.4. Layout Design of CMOS inverter](#34-Layout-Design-of-CMOS-inverter)
   - [3.5 Layout vs Schematic](#35-Layout-vs-Schematic)
-  - [3.6 Post-Layout Analysis](#35-Post-Layout-Analysis)
+  - [3.6 Post-Layout Analysis](#36-Post-Layout-Analysis)
     - [3.6.1 Noise Margin Analysis](#361-Noise-Margin-Analysis)
     - [3.6.2 Delay Analysis](#362-Delay-Analysis)
     - [3.6.3 Power Dissipation Analysis](#363-Power-Dissipation-Analysis)
